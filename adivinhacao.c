@@ -1,27 +1,59 @@
 // Standard I/O
 // Neste arquivo, ficam todas as funções de entrada e saída.
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 // define ajuda a definir o valor de uma constante
 // #define numeroDeTentativas 3
 // Função principal "main" é necessária para rodar o programa.
 int main()
 {
-  printf("************************************\n");
-  printf("* Bem-vindo ao Jogo de Adivinhacao *\n");
-  printf("************************************\n");
+  printf("\n\n");
+  printf(" ------------------ \n");
+  printf(" ------------------ \n");
+  printf(" ------------------ Bem-vindo ao \n");
+  printf(" ------------------ Jogo de Adivinhacao! \n");
+  printf(" ------------------ \n");
+  printf(" ------------------ \n");
+  printf(" ------------------ \n");
+  printf("\n\n");
 
-  int numeroSecreto;
-  numeroSecreto = 42;
+  srand(time(0));
+  int numeroSecreto = rand() % 100;
 
   int chute;
 
   int tentativas = 1;
 
+  double pontos = 1000;
+
+  int acertou;
+  int nivel;
+  int totalTentativas;
+
+  printf("Qual o nivel de dificuldade?\n");
+  printf("(1) Facil (2) Medio (3) Dificil\n\n");
+  printf("Escolha: ");
+  scanf("%d", &nivel);
+
+  switch (nivel)
+  {
+  case 1:
+    totalTentativas = 20;
+    break;
+  case 2:
+    totalTentativas = 15;
+    break;
+  default:
+    totalTentativas = 6;
+    break;
+  }
+
   // Sabe a quantidade? For
   // Não sabe a quantidade? While
-  while (1)
+  for (int i = 1; i <= totalTentativas; i++)
   {
-    printf("Qual eh o seu %do chute? ", tentativas);
+    printf("Tentativa %d de %d\n:", i, totalTentativas);
     // scanf lê o nosso teclado, funciona como o prompt do Javascript ou input no Python
     scanf("%d", &chute);
 
@@ -29,22 +61,18 @@ int main()
     if (chute < 0)
     {
       printf("Nao use numeros negativos!");
-      tentativas--;
+      i--;
       // continue irá ir para a próxima iteração do loop
       continue;
     }
 
-    printf("Seu %do chute foi o numero %d\n", tentativas, chute);
-
-    int acertou = (chute == numeroSecreto);
-    int maior = chute > numeroSecreto;
+    acertou = (chute == numeroSecreto);
 
     if (acertou)
     {
-      printf("Voce acertou!\n");
       break;
     }
-    else if (maior)
+    if (chute > numeroSecreto)
     {
       printf("O numero eh menor!\n");
     }
@@ -52,8 +80,31 @@ int main()
     {
       printf("O numero eh maior!\n");
     }
-    tentativas++;
+    // Casting é uma forma de converter um tipo em outro.
+    // abs retornará sempre um valor positivo.
+    double pontosPerdidos = abs(chute - numeroSecreto) / 2.0;
+    pontos = pontos - pontosPerdidos;
   }
+  printf("\n");
+  if (acertou)
+  {
+    printf(" ------------------\n");
+    printf(" ------------------\n");
+    printf(" ------------------\n");
+    printf(" ------------------\n");
+    printf("\nParabens! Você acertou!\n");
+    printf("Você fez %.2f pontos. Até a próxima!\n\n", pontos);
+  }
+  else
+  {
+    printf(" ------------------\n");
+    printf(" ------------------\n");
+    printf(" ------------------\n");
+    printf(" ------------------\n");
+    printf("\nVoce perdeu! Tente novamente!\n\n");
+  }
+
+  printf("Voce fez %.2f pontos.\n", pontos);
   printf("Fim de jogo.\n");
   return 0;
 }
